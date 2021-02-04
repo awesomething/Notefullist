@@ -43,7 +43,7 @@ export default class Note extends React.Component {
       <div className='Note'>
         <h2 className='Note__title'>
           <Link to={`/note/${this.props.id}`}>
-            {this.props.title}
+            {this.props.name}
           </Link>
         </h2>
         <button
@@ -59,7 +59,7 @@ export default class Note extends React.Component {
             Modified
             {' '}
             <span className='Date'>
-              {format(this.props.date_published, 'Do MMM YYYY')}
+              {format(this.props.modified, 'Do MMM YYYY')}
             </span>
           </div>
         </div>
