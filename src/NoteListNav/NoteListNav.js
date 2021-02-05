@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink, Link } from 'react-router-dom'
-import CircleButton from '../CircleButton/CircleButton'
+import RoundButton from '../RoundButton/RoundButton'
 import ApiContext from '../ApiContext'
 import { countNotesForFolder } from '../notes-helpers'
 import './NoteListNav.css'
@@ -28,7 +28,7 @@ export default class NoteListNav extends React.Component {
           )}
         </ul>
         <div className='NoteListNav__button-wrapper'>
-          <CircleButton
+          <RoundButton
             tag={Link}
             to='/add-folder'
             type='button'
@@ -36,7 +36,7 @@ export default class NoteListNav extends React.Component {
           >
             <br />
             Folder
-          </CircleButton>
+          </RoundButton>
         </div>
       </div>
     )

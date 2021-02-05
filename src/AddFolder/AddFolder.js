@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import NotefulForm from '../NotefulForm/NotefulForm'
+import NoteForm from '../NoteForm/NoteForm'
 import ApiContext from '../ApiContext'
 import config from '../config'
 import './AddFolder.css'
@@ -15,7 +15,7 @@ export default class AddFolder extends Component {
   handleSubmit = e => {
     e.preventDefault()
     const folder = {
-      title: e.target['folder-name'].value
+      name: e.target['folder-name'].value
     }
     fetch(`${config.API_ENDPOINT}/folders`, {
       method: 'POST',
@@ -42,7 +42,7 @@ export default class AddFolder extends Component {
     return (
       <section className='AddFolder'>
         <h2>Create a folder</h2>
-        <NotefulForm onSubmit={this.handleSubmit}>
+        <NoteForm onSubmit={this.handleSubmit}>
           <div className='field'>
             <label htmlFor='folder-name-input'>
               Name
@@ -54,7 +54,7 @@ export default class AddFolder extends Component {
               Add folder
             </button>
           </div>
-        </NotefulForm>
+        </NoteForm>
       </section>
     )
   }

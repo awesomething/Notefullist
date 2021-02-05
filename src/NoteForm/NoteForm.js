@@ -1,11 +1,11 @@
 import React from 'react'
-import './NotefulForm.css'
+import './NoteForm.css'
 
-export default function NotefulForm(props) {
+export default function NoteForm(props) {
   const { className, ...otherProps } = props
   return (
     <form
-      className={['Noteful-form', className].join(' ')}
+      className={['Note-form', className].join(' ')}
       action='#'
       {...otherProps}
     />

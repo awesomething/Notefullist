@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Route, Link } from "react-router-dom";
 import NoteListNav from "../NoteListNav/NoteListNav";
-import NotePageNav from "../NotePageNav/NotePageNav";
+import HomePageNav from "../HomePageNav/HomePageNav";
 import NoteListMain from "../NoteListMain/NoteListMain";
-import NotePageMain from "../NotePageMain/NotePageMain";
+import HomePageMain from "../HomePageMain/HomePageMain";
 import AddFolder from "../AddFolder/AddFolder";
-import AddNote from "../AddNote/AddNote";
+import AddNotes from "../AddNotes/AddNotes";
 import ApiContext from "../ApiContext";
 import config from "../config";
 import "./App.css";
@@ -42,7 +42,7 @@ class App extends Component {
     });
   };
 
-  handleAddNote = (note) => {
+  handleAddNotes = (note) => {
     this.setState({
       notes: [...this.state.notes, note],
     });
@@ -60,9 +60,9 @@ class App extends Component {
         {["/", "/folder/:folderId"].map((path) => (
           <Route exact key={path} path={path} component={NoteListNav} />
         ))}
-        <Route exact path="/note/:noteId" component={NotePageNav} />
-        <Route exact path="/add-folder" component={NotePageNav} />
-        <Route exact path="/add-note" component={NotePageNav} />
+        <Route exact path="/note/:noteId" component={HomePageNav} />
+        <Route exact path="/add-folder" component={HomePageNav} />
+        <Route exact path="/add-note" component={HomePageNav} />
       </>
     );
   }
@@ -73,9 +73,9 @@ class App extends Component {
         {["/", "/folder/:folderId"].map((path) => (
           <Route exact key={path} path={path} component={NoteListMain} />
         ))}
-        <Route exact path="/note/:noteId" component={NotePageMain} />
+        <Route exact path="/note/:noteId" component={HomePageMain} />
         <Route exact path="/add-folder" component={AddFolder} />
-        <Route exact path="/add-note" component={AddNote} />
+        <Route exact path="/add-note" component={AddNotes} />
       </>
     );
   }
@@ -85,7 +85,7 @@ class App extends Component {
       notes: this.state.notes,
       folders: this.state.folders,
       addFolder: this.handleAddFolder,
-      addNote: this.handleAddNote,
+      addNotes: this.handleAddNotes,
       deleteNote: this.handleDeleteNote,
     };
     console.log(value);

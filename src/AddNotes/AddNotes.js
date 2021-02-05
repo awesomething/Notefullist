@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import NotefulForm from '../NotefulForm/NotefulForm'
+import NoteForm from '../NoteForm/NoteForm'
 import ApiContext from '../ApiContext'
 import config from '../config'
-import './AddNote.css'
+import './AddNotes.css'
 
-export default class AddNote extends Component {
+export default class AddNotes extends Component {
   static defaultProps = {
     history: {
       push: () => { }
@@ -15,10 +15,10 @@ export default class AddNote extends Component {
   handleSubmit = e => {
     e.preventDefault()
     const newNote = {
-      title: e.target['note-name'].value,
+      name: e.target['note-name'].value,
       content: e.target['note-content'].value,
       folderId: e.target['note-folder-id'].value,
-      date_published: new Date(),
+      modified: new Date(),
     }
     fetch(`${config.API_ENDPOINT}/notes`, {
       method: 'POST',
@@ -33,7 +33,7 @@ export default class AddNote extends Component {
         return res.json()
       })
       .then(note => {
-        this.context.addNote(note)
+        this.context.addNotes(note)
         this.props.history.push(`/folder/${note.folderId}`)
       })
       .catch(error => {
@@ -45,9 +45,9 @@ export default class AddNote extends Component {
     const { folders=[] } = this.context
     console.log(folders)
     return (
-      <section className='AddNote'>
+      <section className='AddNotes'>
         <h2>Create a note</h2>
-        <NotefulForm onSubmit={this.handleSubmit}>
+        <NoteForm onSubmit={this.handleSubmit}>
           <div className='field'>
             <label htmlFor='note-name-input'>
               Name
@@ -68,7 +68,7 @@ export default class AddNote extends Component {
               <option value={null}>...</option>
               {folders.map(folder =>
                 <option key={folder.id} value={folder.id}>
-                  {folder.title}
+                  {folder.name}
                 </option>
               )}
             </select>
@@ -78,7 +78,7 @@ export default class AddNote extends Component {
               Add note
             </button>
           </div>
-        </NotefulForm>
+        </NoteForm>
       </section>
     )
   }

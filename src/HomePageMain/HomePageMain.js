@@ -2,9 +2,9 @@ import React from 'react'
 import Note from '../Note/Note'
 import ApiContext from '../ApiContext'
 import { findNote } from '../notes-helpers'
-import './NotePageMain.css'
+import './HomePageMain.css'
 
-export default class NotePageMain extends React.Component {
+export default class HomePageMain extends React.Component {
   static defaultProps = {
     match: {
       params: {}
@@ -19,16 +19,17 @@ export default class NotePageMain extends React.Component {
   render() {
     const { notes=[] } = this.context
     const { noteId } = this.props.match.params
-    const note = findNote(notes, parseInt(noteId)) || { content: '' }
+    const note = findNote(notes, noteId) || { content: '' }
+   
     return (
-      <section className='NotePageMain'>
+      <section className='HomePageMain'>
         <Note
           id={note.id}
-          title={note.title}
-          date_published={note.date_published}
+          name={note.name}
+          modified={note.modified}
           onDeleteNote={this.handleDeleteNote}
         />
-        <div className='NotePageMain__content'>
+        <div className='HomePageMain__content'>
           {note.content.split(/\n \r|\n/).map((para, i) =>
             <p key={i}>{para}</p>
           )}

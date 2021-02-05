@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Note from '../Note/Note'
-import CircleButton from '../CircleButton/CircleButton'
+import RoundButton from '../RoundButton/RoundButton'
 import ApiContext from '../ApiContext'
 import { getNotesForFolder } from '../notes-helpers'
 import './NoteListMain.css'
@@ -18,7 +18,7 @@ export default class NoteListMain extends React.Component {
     const { folderId } = this.props.match.params
     const { notes=[] } = this.context
     console.log(notes)
-    const notesForFolder = getNotesForFolder(notes, parseInt(folderId))
+    const notesForFolder = getNotesForFolder(notes, folderId)
     return (
       <section className='NoteListMain'>
         <ul>
@@ -33,7 +33,7 @@ export default class NoteListMain extends React.Component {
           )}
         </ul>
         <div className='NoteListMain__button-container'>
-          <CircleButton
+          <RoundButton
             tag={Link}
             to='/add-note'
             type='button'
@@ -41,7 +41,7 @@ export default class NoteListMain extends React.Component {
           >
             <br />
             Note
-          </CircleButton>
+          </RoundButton>
         </div>
       </section>
     )

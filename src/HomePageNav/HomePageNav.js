@@ -1,10 +1,10 @@
 import React from 'react'
-import CircleButton from '../CircleButton/CircleButton'
+import RoundButton from '../RoundButton/RoundButton'
 import ApiContext from '../ApiContext'
 import { findNote, findFolder } from '../notes-helpers'
-import './NotePageNav.css'
+import './HomePageNav.css'
 
-export default class NotePageNav extends React.Component {
+export default class HomePageNav extends React.Component {
   static defaultProps = {
     history: {
       goBack: () => { }
@@ -21,18 +21,18 @@ export default class NotePageNav extends React.Component {
     const note = findNote(notes, noteId) || {}
     const folder = findFolder(folders, note.folderId)
     return (
-      <div className='NotePageNav'>
-        <CircleButton
+      <div className='HomePageNav'>
+        <RoundButton
           tag='button'
           role='link'
           onClick={() => this.props.history.goBack()}
-          className='NotePageNav__back-button'
+          className='HomePageNav__back-button'
         >
           <br />
           Back
-        </CircleButton>
+        </RoundButton>
         {folder && (
-          <h3 className='NotePageNav__folder-name'>
+          <h3 className='HomePageNav__folder-name'>
             {folder.name}
           </h3>
         )}
