@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import {format} from 'date-fns'
 import ApiContext from '../ApiContext'
@@ -66,4 +67,14 @@ export default class Note extends React.Component {
       </div>
     )
   }
+}
+
+Note.defaultProps = {
+  id: "",
+  name: ""
+}
+
+Note.propTypes = {
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired
 }
