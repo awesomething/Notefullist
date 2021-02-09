@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import Note from '../Note/Note'
 import RoundButton from '../RoundButton/RoundButton'
 import ApiContext from '../ApiContext'
@@ -17,7 +18,7 @@ export default class NoteListMain extends React.Component {
   render() {
     const { folderId } = this.props.match.params
     const { notes=[] } = this.context
-    console.log(notes)
+    
     const notesForFolder = getNotesForFolder(notes, folderId)
     return (
       <section className='NoteListMain'>
@@ -46,4 +47,13 @@ export default class NoteListMain extends React.Component {
       </section>
     )
   }
+}
+
+
+NoteListMain.propTypes = {
+  match: PropTypes.shape({
+    params:PropTypes.shape({
+      folderId: PropTypes.string
+    })
+  })
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import Note from '../Note/Note'
+import PropTypes from 'prop-types'
 import ApiContext from '../ApiContext'
 import { findNote } from '../notes-helpers'
 import './HomePageMain.css'
@@ -37,4 +38,13 @@ export default class HomePageMain extends React.Component {
       </section>
     )
   }
+}
+
+HomePageMain.propTypes = {
+  history: PropTypes.any,
+  match: PropTypes.shape({
+    params:PropTypes.shape({
+      folderId: PropTypes.string
+    })
+  })
 }

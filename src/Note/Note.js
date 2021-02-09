@@ -38,8 +38,6 @@ export default class Note extends React.Component {
   }
 
   render() {
-
-    console.log(this.props)
     return (
       <div className='Note'>
         <h2 className='Note__title'>
@@ -76,5 +74,6 @@ Note.defaultProps = {
 
 Note.propTypes = {
   id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired
+  name: PropTypes.string.isRequired,
+  modified: PropTypes.string.isRequired
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import './RoundButton.css'
 
 export default function NavRoundButton(props) {
@@ -16,4 +17,10 @@ export default function NavRoundButton(props) {
 
 NavRoundButton.defaultProps ={
   tag: 'a',
+}
+
+NavRoundButton.propTypes = {
+  tag: PropTypes.func,
+  children: PropTypes.array,
+  className: PropTypes.string
 }
