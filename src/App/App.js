@@ -1,21 +1,43 @@
-import React, { Component } from "react";
-import { Route, Link } from "react-router-dom";
-import NoteListNav from "../NoteListNav/NoteListNav";
-import HomePageNav from "../HomePageNav/HomePageNav";
-import NoteListMain from "../NoteListMain/NoteListMain";
-import HomePageMain from "../HomePageMain/HomePageMain";
-import AddFolder from "../AddFolder/AddFolder";
-import AddNotes from "../AddNotes/AddNotes";
-import ApiContext from "../ApiContext";
-import config from "../config";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
-import "./App.css";
+import React, { Component } from 'react'
+import { Route, Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import NoteListNav from '../NoteListNav/NoteListNav'
+import NotePageNav from '../NotePageNav/NotePageNav'
+import NoteListMain from '../NoteListMain/NoteListMain'
+import NotePageMain from '../NotePageMain/NotePageMain'
+import ApiContext from '../ApiContext'
+import config from '../config'
+import './App.css'
+import AddFolder from '../AddFolder/AddFolder'
+import AddNote from '../AddNote/AddNote'
+import NotefulErrors from '../NotefulErrors'
+
+
 
 class App extends Component {
   state = {
     notes: [],
     folders: [],
-  };
+    newFolder: {
+      hasError: false,
+      touched: false,
+      name: '',
+    },
+    newNote: {
+      name: {
+        touched: false,
+        value: '',
+      },
+      folder_id: {
+        touched: false,
+        value: '',
+      },
+      content: {
+        touched: false,
+        value: '',
+      },
+    },
+  }
 
   componentDidMount() {
     Promise.all([
@@ -23,89 +45,118 @@ class App extends Component {
       fetch(`${config.API_ENDPOINT}/folders`),
     ])
       .then(([notesRes, foldersRes]) => {
-        if (!notesRes.ok) return notesRes.json().then((e) => Promise.reject(e));
+        if (!notesRes.ok) return notesRes.json().then(e => Promise.reject(e))
         if (!foldersRes.ok)
-          return foldersRes.json().then((e) => Promise.reject(e));
+          return foldersRes.json().then(e => Promise.reject(e))
 
-        return Promise.all([notesRes.json(), foldersRes.json()]);
+        return Promise.all([notesRes.json(), foldersRes.json()])
       })
       .then(([notes, folders]) => {
-        this.setState({ notes, folders });
+        this.setState({ notes, folders })
       })
-      .catch((error) => {
-        console.error({ error });
-      });
+      .catch(error => {
+        console.error({ error })
+      })
   }
 
-  handleAddFolder = (folder) => {
+  updateNewFolderName = name => {
     this.setState({
-      folders: [...this.state.folders, folder],
-    });
-  };
+      newFolder: {
+        hasError: false,
+        touched: true,
+        name: name,
+      },
+    })
+  }
 
-  handleAddNotes = (note) => {
+  updateNewNoteData = (input, value) => {
+    this.setState({
+      newNote: {
+          ...this.state.newNote,
+        [input]: {
+          touched: true,
+          value: value,
+        },
+      },
+    })
+  }
+
+  handleAddFolder = newFolder => {
+    this.setState({
+      folders: [...this.state.folders, newFolder],
+    })
+  }
+
+  handleAddNote = note => {
     this.setState({
       notes: [...this.state.notes, note],
-    });
-  };
+    })
+  }
 
-  handleDeleteNote = (noteId) => {
+  handleDeleteNote = noteId => {
+    console.log('Firing!')
     this.setState({
-      notes: this.state.notes.filter((note) => note.id !== noteId),
-    });
-  };
+      notes: this.state.notes.filter(note => note.id !== noteId),
+    })
+
+  }
 
   renderNavRoutes() {
     return (
       <>
-        {["/", "/folder/:folderId"].map((path) => (
+        <Route path="/note/:noteId" component={NotePageNav} />
+        <Route path="/add-folder" component={NotePageNav} />
+        <Route path="/add-note" component={NotePageNav} />
+        {['/', '/folder/:folderId'].map(path => (
           <Route exact key={path} path={path} component={NoteListNav} />
         ))}
-        <Route exact path="/note/:noteId" component={HomePageNav} />
-        <Route exact path="/add-folder" component={HomePageNav} />
-        <Route exact path="/add-note" component={HomePageNav} />
       </>
-    );
+    )
   }
 
   renderMainRoutes() {
     return (
       <>
-        {["/", "/folder/:folderId"].map((path) => (
+        <Route path="/note/:noteId" component={NotePageMain} />
+        <Route path="/add-folder" component={AddFolder} />
+        <Route path="/add-note" component={AddNote} />
+        {['/', '/folder/:folderId'].map(path => (
           <Route exact key={path} path={path} component={NoteListMain} />
         ))}
-        <Route exact path="/note/:noteId" component={HomePageMain} />
-        <Route exact path="/add-folder" component={AddFolder} />
-        <Route exact path="/add-note" component={AddNotes} />
       </>
-    );
+    )
   }
 
   render() {
+    console.log(this.state);
     const value = {
       notes: this.state.notes,
       folders: this.state.folders,
-      addFolder: this.handleAddFolder,
-      addNotes: this.handleAddNotes,
       deleteNote: this.handleDeleteNote,
-    };
-    
+      addFolder: this.handleAddFolder,
+      newFolder: this.state.newFolder,
+      updateNewFolderName: this.updateNewFolderName,
+      newNote: this.state.newNote,
+      handleAddNote: this.handleAddNote,
+      updateNewNoteData: this.updateNewNoteData
+    }
     return (
       <ApiContext.Provider value={value}>
-        <ErrorBoundary>
         <div className="App">
+          <NotefulErrors>
           <nav className="App__nav">{this.renderNavRoutes()}</nav>
           <header className="App__header">
             <h1>
-              <Link to="/">Noteful</Link>{" "}
+              <Link to="/">Noteful</Link>{' '}
+              <FontAwesomeIcon icon="check-double" />
             </h1>
           </header>
           <main className="App__main">{this.renderMainRoutes()}</main>
+          </NotefulErrors>
         </div>
-        </ErrorBoundary>
       </ApiContext.Provider>
-    );
+    )
   }
 }
 
-export default App;
+export default App

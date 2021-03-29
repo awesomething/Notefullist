@@ -1,61 +1,72 @@
-import React, { Component } from 'react'
-import NoteForm from '../NoteForm/NoteForm'
-import ApiContext from '../ApiContext'
-import config from '../config'
+import React, { Component } from 'react';
+import config from '../config';
+import ApiContext from '../ApiContext';
 import './AddFolder.css'
+import PropTypes from 'prop-types'
 
 export default class AddFolder extends Component {
-  static defaultProps = {
-    history: {
-      push: () => { }
-    },
-  }
   static contextType = ApiContext;
 
-  handleSubmit = e => {
-    e.preventDefault()
-    const folder = {
-      name: e.target['folder-name'].value
+  addFolder = (name) => {
+    fetch(`${config.API_ENDPOINT}/folders/`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({name})
+      }
+    )
+    .then(resp => resp.json())
+    .then(data => this.context.addFolder(data))
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    const newFolder = event.target.newFolder.value;
+    this.addFolder(newFolder);
+    this.props.history.goBack();
+  }
+
+  updateFolderName(e) {
+    const newName = e.target.value;
+      this.context.updateNewFolderName(newName);
+  }
+
+  validateFolderName() {
+    if (this.context.newFolder.name.trim() === 0) {
+      return 'Must be more than 0 characters.'
+    } else if ( this.context.newFolder.name.trim().length <= 3 ) {
+      return 'Must be more than 3 characters.'
     }
-    fetch(`${config.API_ENDPOINT}/folders`, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify(folder),
-    })
-      .then(res => {
-        if (!res.ok)
-          return res.json().then(e => Promise.reject(e))
-        return res.json()
-      })
-      .then(folder => {
-        this.context.addFolder(folder)
-        this.props.history.push(`/folder/${folder.id}`)
-      })
-      .catch(error => {
-        console.error({ error })
-      })
   }
 
   render() {
-    return (
-      <section className='AddFolder'>
-        <h2>Create a folder</h2>
-        <NoteForm onSubmit={this.handleSubmit}>
-          <div className='field'>
-            <label htmlFor='folder-name-input'>
-              Name
-            </label>
-            <input type='text' id='folder-name-input' name='folder-name' />
-          </div>
-          <div className='buttons'>
-            <button type='submit'>
-              Add folder
-            </button>
-          </div>
-        </NoteForm>
-      </section>
+    return(
+      <>
+        <header>
+          <h2 className='add-folder-header'>Add A New Folder</h2>
+        </header>
+        <form className="add-folder-form" onSubmit={e => this.handleSubmit(e)}>
+        <label htmlFor="newFolder">
+          Name:
+        {this.context.newFolder.touched && (
+          <p>{this.validateFolderName()}</p>
+          )}  
+        </label>
+        <input
+        type="text"
+        name="newFolder"
+        id="newFolder"
+        aria-required="true"
+        aria-label="Name"
+        onChange={(e) => this.updateFolderName(e)}/>
+        <button type="submit">Submit</button>
+      </form>
+      </>
     )
   }
+}
+
+AddFolder.propTypes = {
+  history: PropTypes.object
 }
