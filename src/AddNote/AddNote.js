@@ -35,10 +35,10 @@ export default class AddNote extends React.Component {
     const newNote = {
       name: e.target.name.value,
       content: e.target.content.value,
-      folder_id: e.target.folders.value,
+      folderid: e.target.folders.value,
       modified: new Date(),
     }
-    console.log(newNote);
+   
     this.addNewNote(newNote)
     this.props.history.push('/');
   }
@@ -56,7 +56,7 @@ export default class AddNote extends React.Component {
   }
 
   render() {
-    console.log(this.context);
+   
     return (
       <>
         <header>

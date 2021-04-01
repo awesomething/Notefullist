@@ -1,6 +1,6 @@
 .add-note-header {
   color: #cacaca;
-  padding: 10px;
+  padding: 20px;
 }
 
 .add-note-form {
@@ -10,17 +10,17 @@
   flex-flow: column;
   justify-content: flex-start;
   align-items: flex-start;
-  height: 500px;
-  padding: 10px;
+  height: 510px;
+  padding: 20px;
 }
 
 .add-note-form > * {
-  margin: 10px;
+  margin: 20px;
 }
 
 .add-note-form p {
   color: red;
-  font-size: 1em;
+  font-size: 2em;
 }
 
 .add-note-form input {

@@ -22,13 +22,10 @@ export default class Note extends React.Component {
         'content-type': 'application/json'
       },
     })
-      .then(res => {
-        if (!res.ok)
-          return res.json().then(e => Promise.reject(e))
-        // return res.json()
-      })
+      
       .then(() => {
-        console.log('wheeeeee')
+        
+          this.props.onDeleteNote(noteId)
           this.context.deleteNote(noteId)
         // allow parent to perform extra behaviour
         // this.props.onDeleteNote(noteId)
@@ -39,7 +36,7 @@ export default class Note extends React.Component {
   }
 
   render() {
-    console.log(this.context.deleteNote);
+    
     const { name, id, modified } = this.props
     return (
       <div className='Note'>
@@ -70,11 +67,15 @@ export default class Note extends React.Component {
     )
   }
 }
+Note.defaultProps={
+  onDeleteNote: ()=>{
 
+  }
+}
 
 Note.propTypes = {
   onDeleteNote: PropTypes.func,
-  id: PropTypes.string,
+  id: PropTypes.number,
   name: PropTypes.string,
   modified: PropTypes.string
 }

@@ -8,7 +8,7 @@ export default class AddFolder extends Component {
   static contextType = ApiContext;
 
   addFolder = (name) => {
-    fetch(`${config.API_ENDPOINT}/folders/`, {
+    fetch(`${config.API_ENDPOINT}/folders`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
